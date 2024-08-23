@@ -6,8 +6,8 @@ class pila():
     __tope: int             #el tope apunta al ultimo elemento ingresado
     __lista: np.ndarray
 
-    def __init__(self):
-        self.__dimension = 20
+    def __init__(self, xdim=10):
+        self.__dimension = xdim
         self.__incremento = 5
         self.__cantidad = 0
         self.__tope = -1    #se pone el tope en -1 para que apunte siempre a uno menos que la cantidad y por 
@@ -42,43 +42,3 @@ class pila():
         for i in range(self.__cantidad):
             print(self.__lista[aux])
             aux -= 1
-    
-    def binario(self):
-        num = int(input("Ingrese número deseado: "))
-        while num != 0:
-            resto = num % 2
-            num = num // 2
-            self.insertar(resto)
-        numero_binario = ''         #esto es pa que no lo muestre uno abajo del otro :P
-        while self.__tope > -1:
-            numero_binario += str(self.eliminar())
-        print(numero_binario)
-
-    def factorial(self):
-        num = int(input("Ingrese número deseado: "))
-        aux = num
-        while num > 1:
-            self.insertar(num)
-            num -= 1
-        while self.__tope > -1:
-            num *= self.eliminar()
-        print (f'El factorial de {aux} es {num}')
-
-if __name__ == '__main__':
-    p=pila()
-    opcion=input('''Elija una opción: 
-                 a. Convertir numero en binario
-                 b. Factorial
-                 c. Torres de Hanoi
-                 d. salir del menú
-                 ----> ''')
-    while(opcion != 'd'):
-        if opcion == 'a':
-            p.binario()
-        elif opcion == 'b':
-            p.factorial()
-        elif opcion == 'c':
-            pass
-        elif opcion == 'z':
-            p.recorrer()
-        opcion=input('Elija una opción: ')
