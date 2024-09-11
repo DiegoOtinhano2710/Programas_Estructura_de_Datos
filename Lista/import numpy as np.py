@@ -85,5 +85,4 @@ class listaSecuencial:
     def lleno(self):
         return self.__cantidad == self.__tamaño
 
-https://docs.google.com/document/d/1jW52S7kHy15-WmWyxxNrA9J8c53PB6sbFoYk-lnLbvc/edit?usp=sharing
     
