@@ -1,7 +1,6 @@
 import numpy as np
 class pila():
     __dimension: int        #tamaño de la lista numpy
-    __incremento: int       #en caso de estar llena ya la lista, se incrementa
     __cantidad: int         #cantidad de elementos
     __tope: int             #el tope apunta al ultimo elemento ingresado
     __lista: np.ndarray
