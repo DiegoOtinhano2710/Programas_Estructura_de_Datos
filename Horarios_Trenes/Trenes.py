@@ -1,66 +1,54 @@
 class estación:
     __matriz: list
     __estaciones: int
-    __memo: dict  # Diccionario para memorización
+    __memo: dict
 
     def __init__(self, n):
         self.__estaciones = n
         self.__matriz = []
         for _ in range(n):
             self.__matriz.append([0] * n)
-        self.__memo = {}  # Inicializamos el diccionario de memorización
+        self.__memo = {}
         
     def agregar(self, origen, destino, tiempo):
         self.__matriz[origen-1][destino-1] = tiempo
         self.__matriz[destino-1][origen-1] = tiempo
-    
-    def mostrar(self):
-        print("Conexiones: ")
-        for i in range(len(self.__matriz)):
-            for j in range(len(self.__matriz)):
-                if self.__matriz[i][j] > 0:
-                    print(f"Desde la estación {i+1} hasta la estación {j+1} se demora {self.__matriz[i][j]} minutos")
-    
+       
     def Buscar_camino(self, origen, destino, visitados):
         # Crear una clave única para este estado
         clave = (origen, destino, tuple(visitados))
-        '''Usamos una tupla porque:
-        . Es inmutable, lo que la hace perfecta para ser usada como clave en un diccionario
-        . Nos permite agrupar varios valores relacionados en una sola estructura
-        . Diccionario: Un diccionario es una estructura de datos que almacena pares de clave-valor. En el código lo usamos así:'''
-        # Si ya hemos calculado este clave antes, retornamos el resultado memorizado
+        # Busca la clave en el diccionario. Retorna el valor si lo encuentra
         if clave in self.__memo:
             return self.__memo[clave]
-        # Caso base: si llegamos al destino
+        # Caso base
         if origen == destino:
             return 0, [destino + 1]
         min_tiempo = float('inf')
         mejor_camino = None
         # Probamos todas las posibles siguientes estaciones
-        for siguiente in range(self.__estaciones):
-            if self.__matriz[origen][siguiente] > 0 and not visitados[siguiente]:
+        for i in range(self.__estaciones):
+            if self.__matriz[origen][i] > 0 and not visitados[i]:
                 # Marcamos la estación como visitada
-                visitados[siguiente] = True
+                visitados[i] = True
     
                 # Llamada recursiva
-                tiempo_resto, camino_resto = self.Buscar_camino(siguiente, destino, visitados.copy())
+                tiempo_resto, camino_resto = self.Buscar_camino(i, destino, visitados.copy())
                 
                 # Si encontramos un camino válido
                 if tiempo_resto != float('inf'):
-                    tiempo_total = self.__matriz[origen][siguiente] + tiempo_resto
+                    tiempo_total = self.__matriz[origen][i] + tiempo_resto
                     if tiempo_total < min_tiempo:
                         min_tiempo = tiempo_total
                         mejor_camino = [origen + 1] + camino_resto
                 
                 # Desmarcamos la estación
-                visitados[siguiente] = False
+                visitados[i] = False
         
-        # Memorizamos el resultado antes de retornarlo
+        # Memoizamos el resultado antes de retornarlo
         self.__memo[clave] = (min_tiempo, mejor_camino if mejor_camino else None)
         return self.__memo[clave]
     
     def Camino_PD(self, ori, dest):
-        # Reiniciamos la memorización para cada nueva búsqueda
         self.__memo = {}
         visitados = [False] * self.__estaciones
         visitados[ori-1] = True
@@ -72,7 +60,6 @@ class estación:
         return tiempo, camino
 
 if __name__ == "__main__":
-    # Creamos grafo con 6 estaciones
     grafo = estación(6)   
     # Conexiones desde estación 1
     grafo.agregar(1, 2, 30)  # 1 -> 2: 30 min
